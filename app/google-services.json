@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "154021764977",
+    "firebase_url": "https://sloyevusers.firebaseio.com",
+    "project_id": "sloyevusers",
+    "storage_bucket": "sloyevusers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154021764977:android:6c7d1411a6f7e1d3",
+        "android_client_info": {
+          "package_name": "com.testapplication.project.kucherenko.dnu.testsloyev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154021764977-9bk8tf98gaimtvmohmih3a0o22v635am.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKIE7HJKKTJtuX1P5Ozmz6WwXu9kJQsoA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

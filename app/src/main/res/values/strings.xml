@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestSloyev</string>
+    <string name="action_settings">Settings</string>
+    <string name="header_text">Suche dir deinen termin aus!</string>
+</resources>
