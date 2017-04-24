@@ -4,21 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.testapplication.project.kucherenko.dnu.testsloyev.client.InfoRequest;
+import com.testapplication.project.kucherenko.dnu.testsloyev.client.MParser;
 import com.testapplication.project.kucherenko.dnu.testsloyev.client.RetrofitClient;
 import com.testapplication.project.kucherenko.dnu.testsloyev.interfaces.ILink;
+import com.testapplication.project.kucherenko.dnu.testsloyev.model.Container;
 import com.testapplication.project.kucherenko.dnu.testsloyev.model.Data;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dataList = new ArrayList<>();
         getData();
 
-        map = getDemoMap();
+        //Container for info saving
+        Container container = null;
+        try {
+            //ResponseParser
+            MParser parser = new MParser(new JSONObject(responseString));
+            container = parser.parse();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        map = container.getTimesMap();
         WheelView<String> date = (WheelView) findViewById(R.id.date_wheel);
         date.setWheelAdapter(new ArrayWheelAdapter(this));
         date.setSkin(WheelView.Skin.Holo);
@@ -60,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final WheelView<String> time = (WheelView) findViewById(R.id.times_wheel);
         time.setSkin(WheelView.Skin.Holo);
         time.setWheelAdapter(new ArrayWheelAdapter(this));
-        date.setWheelData(getDemoList());
+        date.setWheelData(container.getDatesList());
 
         WheelView.OnWheelItemSelectedListener<String> listener = new WheelView.OnWheelItemSelectedListener<String>() {
             @Override
@@ -78,26 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         date.setOnWheelItemSelectedListener(listener);
         time.setOnWheelItemSelectedListener(listener2);
-    }
-
-
-    public List<String> getDemoList() {
-        return Arrays.asList("21-04-2017", "22-04-2017", "23-04-2017");
-    }
-
-    public Map<Integer, List<String>> getDemoMap() {
-        List<List<String>> times = new ArrayList<>();
-        List<String> list1 = Arrays.asList("10:00", "10:30", "10:45");
-        List<String> list2 = Arrays.asList("11:00", "11:30", "11:45");
-        List<String> list3 = Arrays.asList("12:00", "12:30", "12:45");
-
-        times.add(list1);
-        times.add(list2);
-        times.add(list3);
-        Map<Integer, List<String>> map = new HashMap<>();
-        for (int i = 0; i < getDemoList().size(); i++)
-            map.put(i, times.get(i));
-        return map;
     }
 
 //    @Override
@@ -118,9 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         call.enqueue(new Callback<Data>() {
             @Override
             public void onResponse(Response response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    Log.e(TAG, response.body().toString());
-                }
+
             }
 
             @Override
@@ -138,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.burger_view: {
-                new InfoRequest(MainActivity.this, null).request("http://sloyev.de/android.json");
+//                new InfoRequest(MainActivity.this, null).request("http://sloyev.de/android.json");
                 break;
             }
             case R.id.weiter_button: {
@@ -148,5 +136,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    private static final String responseString=
+            "{\n" +
+            "  \"data\": {\n" +
+            "    \"21-04-2017\": [\n" +
+            "      \"12:00:00\",\n" +
+            "      \"12:10:00\",\n" +
+            "      \"12:20:00\",\n" +
+            "      \"12:30:00\",\n" +
+            "      \"12:40:00\",\n" +
+            "      \"12:50:00\",\n" +
+            "      \"13:00:00\",\n" +
+            "      \"13:10:00\",\n" +
+            "      \"13:20:00\",\n" +
+            "      \"13:30:00\",\n" +
+            "      \"13:40:00\",\n" +
+            "      \"13:50:00\",\n" +
+            "      \"14:00:00\",\n" +
+            "      \"14:10:00\",\n" +
+            "      \"14:20:00\",\n" +
+            "      \"14:30:00\",\n" +
+            "      \"14:40:00\",\n" +
+            "      \"14:50:00\",\n" +
+            "      \"15:00:00\"\n" +
+            "    ],\n" +
+            "    \"22-04-2017\": [\n" +
+            "      \"15:50:00\",\n" +
+            "      \"14:00:00\",\n" +
+            "      \"14:10:00\",\n" +
+            "      \"14:20:00\",\n" +
+            "      \"14:30:00\",\n" +
+            "      \"14:40:00\",\n" +
+            "      \"14:50:00\",\n" +
+            "      \"15:00:00\",\n" +
+            "      \"15:10:00\",\n" +
+            "      \"15:20:00\",\n" +
+            "      \"15:30:00\",\n" +
+            "      \"15:40:00\",\n" +
+            "      \"15:50:00\",\n" +
+            "      \"16:00:00\"\n" +
+            "    ],\n" +
+            "    \"23-04-2017\": [\n" +
+            "      \"09:10:00\",\n" +
+            "      \"09:20:00\",\n" +
+            "      \"09:30:00\",\n" +
+            "      \"09:40:00\",\n" +
+            "      \"10:00:00\",\n" +
+            "      \"10:20:00\",\n" +
+            "      \"10:30:00\"\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
 
 }
